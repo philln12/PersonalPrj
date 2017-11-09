@@ -1,0 +1,145 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div ng-controller="testController as tc">
+
+    {{tc.test}}<br />
+    <div class="panel panel-default">
+
+        <div>
+            <md-content>
+                <md-tabs md-dynamic-height md-border-bottom>
+                    <md-tab label="New Location" md-active="tc.selectedIndex">
+                        <md-content class="md-padding">
+                            <pre>{{tc.oListModel | json}}</pre>
+                            @*<div class="col-md-3 container-fluid">
+                                    <form name="addSecondaryImageForm" class="form-horizontal">
+                                        <div class="container-fluid form-group">
+                                            <div class="fileinput-new thumbnail" style="width: 280px; height: 200px; max-width: 100%; max-height: 100%;">
+                                                <img data-src="holder.js/100%x100%" alt="100%x100%" ng-src="{{tc.oListModel.fullMainImageUrl}}" src="https://sabio-training.s3-us-west-2.amazonaws.com/C41/1blank_fca31713-f3b0-4b47-bcf8-fc578f9051cf.png" data-holder-rendered="true" style="height: 100%; width: 100%; display: block;">
+                                            </div>
+                                            <div class="input-group">
+                                                <input type="file" id="file-upload" style="display:none" ng-model-instant onchange="angular.element(this).scope().imgLoaded(this)" required />
+                                                <label for="file-upload" style="width: 280px; padding: 6px 12px; max-width: 100%; max-height: 100%;" class="btn btn-primary">
+                                                    Upload A Photo
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>*@
+
+                            @*<div>*@
+                            <form name="tc.oLocationListing">
+
+
+                                <div>Location Name</div>
+                                <input type="text" class="form-control" name="location" required placeholder="Location Name" ng-model="tc.oListModel.locationName" />
+                                <div style="color:red" ng-show="tc.oLocationListing.location.$invalid && tc.oLocationListing.location.$dirty">This field is required.</div>
+
+                                <div>Address</div>
+                                <input type="text" id="normal-field" name="streetaddress" required class="form-control" placeholder="Address Line 1" ng-model="tc.oListModel.streetAddress">
+                                <div style="color:red" ng-show="tc.oLocationListing.streetaddress.$invalid && tc.oLocationListing.streetaddress.$dirty">This field is required.</div>
+
+                                <div>City</div>
+                                <input type="text" id="normal-field" name="city" required class="form-control" placeholder="City" ng-model="tc.oListModel.city">
+                                <div style="color:red" ng-show="tc.oLocationListing.city.$invalid && tc.oLocationListing.city.$dirty">This field is required.</div>
+
+                                <div>State</div>
+                                <input type="text" name="state" id="normal-field" class="form-control" placeholder="State" ng-model="tc.oListModel.state">
+                               
+                                <div style="color:red" ng-show="tc.oLocationListing.state.$invalid && tc.oLocationListing.state.$dirty">This field is required.</div>
+
+                                <div>Postal Code</div>
+                                <input type="text" name="zipcode" id="normal-field" class="form-control" placeholder="Zipcode" required ng-pattern="/^(\d{5}-\d{4}|\d{5})$/" ng-model="tc.oListModel.postalCode">
+                                <div style="color:red" ng-show="tc.oLocationListing.zipcode.$invalid && tc.oLocationListing.zipcode.$dirty">Please enter a valid postal code.</div>
+
+
+                                <div></div>
+                                <div>Location Description</div>
+                                <textarea class="form-control" placeholder="Short Description of the Location" rows="6" cols="50" required name="description" ng-model="tc.oListModel.locationDescription"> </textarea>
+                                <div style="color:red" ng-show="tc.oLocationListing.description.$invalid && tc.oLocationListing.description.$dirty">This field is required.</div>
+
+                                <div>Location Url</div>
+                                <input type="text" id="normal-field" name="city" required class="form-control" placeholder="Location Url" ng-model="tc.oListModel.locationUrl">
+
+                            </form>
+
+                            <br />
+                            <input type="text" class="form-control" placeholder="Yelp Url" ng-model="tc.scrapeModel.url" /><button style="margin-top:1mm" ng-click="tc.scrap()" class="btn btn-primary">Scrap Url</button>
+                            <div><b>OR</b></div>
+                            <input type="text" class="form-control" placeholder="Restaurant Name" ng-model="tc.searchModel.restaurantName" /><button style="margin-top:1mm" ng-click="tc.search()" class="btn btn-primary">Search</button>
+
+                            @*</div>*@
+
+                            <div class="col-md-12" style="margin-top: 3mm">
+                                <input type="button" style='float: right' class="btn btn-danger btn-rounded pull-right" value="Post Listing" ng-disabled="oLocationListing.$invalid" ng-hide="tc.button" ng-click="tc.postol()" />
+                                <input type="button" style='float: right' class="btn btn-danger btn-rounded pull-right" value="Edit Listing" ng-disabled="oLocationListing.$invalid" ng-show="tc.button" ng-click="tc.editol()" />
+                            </div>
+                        </md-content>
+                    </md-tab>
+
+                    <md-tab label="Your List" md-active="tc.selectedIndex=false">
+                        <md-content class="md-padding">
+
+                            <!--<pre>{{tc.oListIndexModel | json}}</pre>-->
+                           
+                            <div ng-repeat="list in tc.oListIndexModel">
+                                <div class="bg">
+
+                                    <div class="col-md-3">
+                                        <div class="fileinput-new thumbnail" style="width: 175px; height: 130px; max-width: 100%; max-height: 100%;">
+                                            <img alt="100%x100%" ng-src="{{list.fullMainImageUrl}}" style="height: 100%; width: 100%; display: block;">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <span><b>Name: </b>{{list.LocationName}}</span>
+                                        <div><b>Street Address: </b>{{list.StreetAddress}}</div>
+                                        <div><b>City: </b>{{list.City}}</div>
+                                        <div><b>State: </b>{{list.State}}</div>
+                                        <div><b>Postal Code: </b>{{list.PostalCode}}</div>
+                                        <div><b>Location Description: </b>{{list.LocationDescription}}</div>
+                                        <div><b>Location Url: </b>{{list.LocationUrl}}</div>
+                                        <div>
+                                            <content-flag entity-id="list.id" flag-type="tc.flagType"></content-flag>
+                                            <item-reviews entity-id="list.id" review-type="tc.reviewType"></item-reviews>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+
+                                <div class="btn-toolbar">
+                                    <input type="button" value="Edit Listing" class="btn btn-primary btn-rounded pull-right" ng-click="tc.edit(list)">
+                                    <input type="button" value="Delete" class="btn btn-primary btn-rounded pull-right" ng-click="tc.delete(list)">
+                                </div>
+
+                            </div>
+                            <hr>
+                        </md-content>
+                </md-tabs>
+
+
+
+
+            </md-content>
+
+
+
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+
+
+
+
+
+
+}
